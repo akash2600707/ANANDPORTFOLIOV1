@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ananda Vigneshwaran — Spacecraft Electric Propulsion Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a14;
+    --bg2: #0c1626;
+    --bg3: #111e33;
+    --accent: #00d4ff;
+    --accent2: #7b5cff;
+    --accent3: #ff6b35;
+    --text: #e8f4fd;
+    --text2: #8ab4d4;
+    --border: rgba(0,212,255,0.15);
+    --glow: 0 0 30px rgba(0,212,255,0.1);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── STARFIELD ── */
+  #stars {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top:0; left:0; right:0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(5,10,20,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 3rem 4rem;
+    z-index: 1;
+  }
+  .hero-inner { max-width: 900px; }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 40px; height: 1px;
+    background: var(--accent);
+  }
+  h1 {
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  h1 span.highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text2);
+    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--accent);
+    box-shadow: var(--glow);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    position: relative; z-index:1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat {
+    background: var(--bg);
+    padding: 2rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    color: var(--accent);
+    font-weight: 700;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+    display: block;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative; z-index:1;
+    padding: 6rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 60px;
+  }
+  h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+    line-height: 1.1;
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-grid { display: flex; flex-direction: column; gap: 2px; }
+  .exp-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 2rem 2.5rem;
+    transition: all 0.3s;
+  }
+  .exp-card:hover {
+    background: var(--bg3);
+    border-color: var(--accent);
+    box-shadow: var(--glow);
+  }
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .exp-title { font-size: 1.1rem; font-weight: 700; }
+  .exp-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .exp-company { color: var(--accent2); font-size: 0.9rem; margin-bottom: 1rem; }
+  .exp-points { list-style: none; }
+  .exp-points li {
+    font-size: 0.9rem;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 0.6rem;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .exp-points li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+  .proj-card {
+    background: var(--bg2);
+    padding: 2rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .proj-card::before {
+    content: '';
+    position: absolute;
+    top:0; left:0; right:0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .proj-card:hover::before { transform: scaleX(1); }
+  .proj-card:hover { background: var(--bg3); }
+  .proj-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .proj-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .proj-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .proj-desc { font-size: 0.87rem; color: var(--text2); line-height: 1.7; }
+  .proj-result {
+    margin-top: 1.2rem;
+    padding: 0.8rem 1rem;
+    background: rgba(0,212,255,0.05);
+    border-left: 2px solid var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+  }
+
+  /* ── SKILLS ── */
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  @media(max-width:700px) { .skills-layout { grid-template-columns: 1fr; } }
+  .skill-group { margin-bottom: 2rem; }
+  .skill-group-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 1rem;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,212,255,0.05);
+  }
+
+  /* ── EDUCATION ── */
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media(max-width:600px) { .edu-grid { grid-template-columns: 1fr; } }
+  .edu-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+  }
+  .edu-degree { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
+  .edu-field { font-size: 1rem; font-weight: 500; margin: 0.3rem 0; }
+  .edu-inst { font-size: 0.85rem; color: var(--text2); margin-bottom: 1rem; }
+  .edu-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text2);
+  }
+  .edu-cgpa { color: var(--accent2); font-weight: 700; }
+
+  /* ── CONTACT ── */
+  .contact-wrapper {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(0,212,255,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .contact-wrapper h2 { margin-bottom: 1rem; }
+  .contact-wrapper p { color: var(--text2); margin-bottom: 2.5rem; }
+  .contact-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+  .contact-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s;
+  }
+  .contact-link:hover { color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index:1;
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text2);
+  }
+
+  /* ── CERT PILLS ── */
+  .cert-grid { display: flex; flex-direction: column; gap: 1rem; }
+  .cert-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    transition: border-color 0.3s;
+  }
+  .cert-item:hover { border-color: var(--accent); }
+  .cert-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent2);
+    flex-shrink: 0;
+  }
+  .cert-name { font-size: 0.95rem; font-weight: 600; }
+  .cert-org { font-size: 0.8rem; color: var(--text2); }
+  .cert-year {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 2px; }
+
+  @media(max-width:768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .contact-wrapper { padding: 2rem 1.5rem; }
+    .exp-card { padding: 1.5rem; }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- STARFIELD CANVAS -->
+<canvas id="stars"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AV // Propulsion</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Research</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="about">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Spacecraft Electric Propulsion Engineer</div>
+    <h1>Ananda<br><span class="highlight">Vigneshwaran</span></h1>
+    <p class="hero-sub">
+      Aerospace engineer specializing in electric propulsion design, Multiphysics simulation, and experimental validation — building the thrusters that move satellites beyond Earth.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn btn-primary">Get in Touch</a>
+      <a href="#projects" class="btn btn-secondary">View Research</a>
+    </div>
+  </div>
+</header>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-num">2+</span>
+    <span class="stat-label">Years in Industry</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">3</span>
+    <span class="stat-label">Research Projects</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">47%</span>
+    <span class="stat-label">Thrust/Power Gain</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">19%</span>
+    <span class="stat-label">Drag Reduction</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">15+</span>
+    <span class="stat-label">Simulation Tools</span>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Work Experience</div>
+  <h2>Engineering<br>Timeline</h2>
+  <div class="exp-grid fade-in">
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-title">Electric Propulsion Engineer / Scientist</div>
+        <div class="exp-badge">Aug 2024 — Present</div>
+      </div>
+      <div class="exp-company">Stardour Aerospace Technologies Pvt. Ltd.</div>
+      <ul class="exp-points">
+        <li>Led full-stack Multiphysics multiphase computational analysis and experimental validation of a steam Resistojet for CubeSat propulsion — heating element, CD nozzle, and parametric sweep studies.</li>
+        <li>Conducted component-level Multiphysics analysis of an Electrodeless Plasma Thruster for performance evaluation.</li>
+        <li>Owned propulsion subsystem integration — power interface, thermal management, structural mounting — ensuring spacecraft compatibility across mass, power, and volume constraints.</li>
+      </ul>
+    </div>
+    <div class="exp-card" style="border-left-color: var(--accent2);">
+      <div class="exp-header">
+        <div class="exp-title">Electric Propulsion System R&D Intern</div>
+        <div class="exp-badge" style="border-color:var(--accent2);color:var(--accent2);">May 2024 — Aug 2024</div>
+      </div>
+      <div class="exp-company">Stardour Aerospace Technologies Pvt. Ltd.</div>
+      <ul class="exp-points">
+        <li>Conducted detailed numerical analysis and proposed a thruster concept aligned with the company's mission objectives, ensuring suitability for specific operational goals and performance criteria.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH PROJECTS -->
+<section id="projects">
+  <div class="section-label">Academic Research</div>
+  <h2>Key Research<br>Projects</h2>
+  <div class="projects-grid fade-in">
+    <div class="proj-card">
+      <span class="proj-icon">⚡</span>
+      <div class="proj-title">AF-MPD Thruster with Electrostatic TVC</div>
+      <div class="proj-period">July 2023 — June 2024 · M.E. Thesis</div>
+      <p class="proj-desc">Led development of a hybrid Air-Breathing Magneto-Plasma-Dynamic (AF-MPD) thruster with dual ion acceleration stages and integrated electrostatic thrust vector control via a segmented anode design. Conducted experimental testing and plasma diagnostics in VLEO conditions.</p>
+      <div class="proj-result">Thrust/Power: 11.8 → 17.44 mN/kW (+47.8%) · Power delta: +18.47%</div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-icon">🔬</span>
+      <div class="proj-title">Multistage Gridded Ion Thruster</div>
+      <div class="proj-period">Mar 2023 — June 2023 · M.E. 2nd Sem</div>
+      <p class="proj-desc">Designed and fabricated a multistage ion thruster grid configuration maximizing ionization degree and minimizing internal drag using an Aeroelectrodynamic Honeycomb Grid Structure. Prototyped via SolidWorks and 3D printing, followed by experimental validation.</p>
+      <div class="proj-result">+12.6% thrust · −8.7% parasitic drag vs. conventional grid</div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-icon">✈️</span>
+      <div class="proj-title">Boundary Layer Suction on Wingtips</div>
+      <div class="proj-period">Oct 2021 — May 2022 · B.E. Thesis</div>
+      <p class="proj-desc">Designed and simulated an airfoil prototype equipped with active Boundary Layer Suction (BLS) technology to reduce wingtip vortex-induced drag. Used SolidWorks and CATIA for design, ANSYS Fluent for CFD analysis.</p>
+      <div class="proj-result">−19.08% induced drag via active flow control</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Technical Arsenal</div>
+  <h2>Skills &amp;<br>Toolchain</h2>
+  <div class="skills-layout fade-in">
+    <div>
+      <div class="skill-group">
+        <div class="skill-group-title">Design CAD</div>
+        <div class="skill-tags">
+          <span class="tag">SOLIDWORKS</span>
+          <span class="tag">SIEMENS NX 12</span>
+          <span class="tag">Fusion 360</span>
+          <span class="tag">CATIA V5</span>
+          <span class="tag">Autodesk Eagle</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Mesh & Discretization</div>
+        <div class="skill-tags">
+          <span class="tag">ANSYS ICEM</span>
+          <span class="tag">HYPERMESH</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Programming</div>
+        <div class="skill-tags">
+          <span class="tag">MATLAB</span>
+          <span class="tag">Python</span>
+          <span class="tag">Arduino</span>
+          <span class="tag">HTML</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Post-processing</div>
+        <div class="skill-tags">
+          <span class="tag">Tecplot</span>
+          <span class="tag">Veusz</span>
+          <span class="tag">MS Office</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group">
+        <div class="skill-group-title">Simulation & Analysis</div>
+        <div class="skill-tags">
+          <span class="tag">ANSYS Suite</span>
+          <span class="tag">COMSOL Multiphysics</span>
+          <span class="tag">CST Studio Suite</span>
+          <span class="tag">RPA</span>
+          <span class="tag">Open Rocket</span>
+          <span class="tag">Open Motor</span>
+          <span class="tag">GMAT</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Core Expertise</div>
+        <div class="skill-tags">
+          <span class="tag">CFD</span>
+          <span class="tag">FEA / FEM</span>
+          <span class="tag">Plasma Dynamics</span>
+          <span class="tag">Electrostatic Analysis</span>
+          <span class="tag">FSI</span>
+          <span class="tag">Conjugate Heat Transfer</span>
+          <span class="tag">AIT</span>
+          <span class="tag">EMI/EMC</span>
+          <span class="tag">Vacuum Testing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">Education</div>
+  <h2>Academic<br>Background</h2>
+  <div class="edu-grid fade-in">
+    <div class="edu-card">
+      <div class="edu-degree">M.Eng.</div>
+      <div class="edu-field">Aerospace Technology</div>
+      <div class="edu-inst">Madras Institute of Technology – Anna University</div>
+      <div class="edu-meta">
+        <span>2022 – 2024</span>
+        <span class="edu-cgpa">CGPA 7.78</span>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">B.Eng.</div>
+      <div class="edu-field">Aerospace Engineering</div>
+      <div class="edu-inst">Noorul Islam Centre for Higher Education</div>
+      <div class="edu-meta">
+        <span>2018 – 2022</span>
+        <span class="edu-cgpa">CGPA 8.34</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem;">
+    <div class="section-label" style="margin-bottom:1.5rem;">Certifications & Workshops</div>
+    <div class="cert-grid fade-in">
+      <div class="cert-item">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">Essentials for NX CAD</div>
+          <div class="cert-org">Siemens Center of Excellence — MIT Campus, Anna University</div>
+        </div>
+        <div class="cert-year">May 2023</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">Rapid Prototyping Technology</div>
+          <div class="cert-org">Siemens Center of Excellence — MIT Campus, Anna University</div>
+        </div>
+        <div class="cert-year">May 2023</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-dot" style="background:var(--accent3);"></div>
+        <div>
+          <div class="cert-name">Workshop on CFD using ANSYS (Organizer)</div>
+          <div class="cert-org">AERO EXPO'23 — MIT Campus, Anna University</div>
+        </div>
+        <div class="cert-year">Apr 2023</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-dot" style="background:var(--accent3);"></div>
+        <div>
+          <div class="cert-name">Workshop on Combustion Facility (Organizer)</div>
+          <div class="cert-org">AERO EXPO'23 — MIT Campus, Anna University</div>
+        </div>
+        <div class="cert-year">Apr 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrapper fade-in">
+    <div class="section-label" style="justify-content:center;">Let's Connect</div>
+    <h2>Ready to Build<br>the Future of Space?</h2>
+    <p>Open to opportunities in spacecraft propulsion, electric propulsion R&D, and multiphysics simulation engineering.</p>
+    <div class="contact-links">
+      <a href="mailto:anandv8work@gmail.com" class="contact-link">
+        ✉ anandv8work@gmail.com
+      </a>
+      <a href="tel:+917339464561" class="contact-link">
+        ☎ +91 73394 64561
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="contact-link">
+        ↗ LinkedIn Profile
+      </a>
+    </div>
+    <div style="margin-top:2.5rem;">
+      <a href="mailto:anandv8work@gmail.com" class="btn btn-primary">Send a Message</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Ananda Vigneshwaran · Spacecraft Electric Propulsion Engineer · Chennai, India</span>
+</footer>
+
+<script>
+// ── STARFIELD ──
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let W, H, stars = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.2,
+      alpha: Math.random() * 0.7 + 0.1,
+      speed: Math.random() * 0.15 + 0.03,
+      twinkle: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function drawStars(t) {
+  ctx.clearRect(0, 0, W, H);
+  stars.forEach(s => {
+    s.twinkle += 0.01;
+    const alpha = s.alpha * (0.7 + 0.3 * Math.sin(s.twinkle));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(180,220,255,${alpha})`;
+    ctx.fill();
+    s.y -= s.speed;
+    if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+  });
+  requestAnimationFrame(drawStars);
+}
+
+resize();
+initStars();
+drawStars();
+window.addEventListener('resize', () => { resize(); initStars(); });
+
+// ── FADE IN ON SCROLL ──
+const faders = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+faders.forEach(f => observer.observe(f));
+</script>
+</body>
+</html>
